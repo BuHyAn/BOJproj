@@ -105,6 +105,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <StackReserveSize>268435456</StackReserveSize>
+      <StackCommitSize>268435456</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,6 +141,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <StackReserveSize>268435456</StackReserveSize>
+      <StackCommitSize>268435456</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
