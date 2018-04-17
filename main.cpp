@@ -1,36 +1,67 @@
 #include <cstdio>
-<<<<<<< HEAD
-#include <queue>
-int main() {
-	freopen("input.txt", "r", stdin);
-	std::priority_queue<int> q;
-	int D,N;
-	scanf("%d", &N);
-	while (N--) {
-		scanf("%d", &D);
-		q.push(-D);
-	}
-	while (!q.empty()) printf("%d\n", -q.top()), q.pop();
-=======
-int abs_v(int a) { return a < 0 ? -a : a; }
-int min_v(int a, int b) { return a < b ? a : b; }
-int N, board[20][20],S;
 
-int rec(int p, int s) {
-	if (p == N) return abs_v(S - 2*s);
-	
-	return min_v()
+bool getstat(int g, int clk) {
+	return (g & (1 << clk)) > 0;
 }
+int rot(int c, int d) {
+	if (d == 1) {
+		c <<= 1;
+		c |= getstat(c, 8);
+		c &= ~(1 << 8);
+	}
+	else {
+		c |= (getstat(c, 0) << 8);
+		c >>= 1;
+	}
+	return c;
+}
+int rev(int d) { return d == 1 ? -1 : 1; }
 int main() {
 	freopen("input.txt", "r", stdin);
-	/*
-	char A[1001], B[1001];
-	scanf("%s%s", A, B);
-	*/
-	int i, j, S=0;
-	scanf("%d", &N);
-	for (i = 0; i < N; i++) for (j = 0; j < N; j++) scanf("%d", &board[i][j]), S += board[i][j];
+	char S[1001];
+	int T,i,j=0,K,idx,d,ans=0, *gear,*dt;
+	scanf("%d\n", &T);
+	gear = new int[T] {}, dt = new int[T];
+	for (i = 0; i < T; i++) {
+		scanf("%s", S);
+		for (j=0; S[j]; j++) {
+			gear[i] <<= 1;
+			gear[i] |= (S[j] - '0');
+		}
+	}
+	for (i = 0; i < T; i++) {
+		for (j = 7; j >= 0; j--) printf("%d", getstat(gear[i], j));
+		printf("\n");
+	}
+	printf("\n");
+	printf("\n");
+
+	scanf("%d", &K);
+	while (K--) {
+		scanf("%d%d", &idx, &d);
+		idx--;
+		i = idx - 1, dt[idx] = d;
+		while (0 <= idx) {
+			if (getstat(gear[idx], 2) != getstat(gear[idx + 1], 6)) dt[idx] = rev(dt[idx + 1]);
+			else dt[idx] = dt[idx + 1];
+			idx--;
+		}
+		i = idx + 1;
+		while (idx < T) {
+			if (getstat(gear[idx], 6) != getstat(gear[idx - 1], 2)) dt[idx] = rev(dt[idx - 1]);
+			else dt[idx] = dt[idx - 1];
+			idx++;
+		}
+		for (i = 0; i < T; i++) gear[i] = rot(gear[i], dt[i]);
+		for (i = 0; i < T; i++) {
+			for (j = 7; j >= 0; j--) printf("%d", getstat(gear[i], j));
+			printf("\n");
+		}
+		printf("\n");
+	}
 	
->>>>>>> 90cc53539249f5c79b5bb1f9159b8de7671dd6ea
+
+	for (i = 0; i < T; i++) ans += getstat(gear[i], 0);
+	printf("%d", ans);
 	return 0;
 }
